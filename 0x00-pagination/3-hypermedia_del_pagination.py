@@ -40,23 +40,30 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """
-        Returns a dictionary containing hypermedia for a dataset
-        """
+        """Return a dictionary with pagination information"""
         assert isinstance(index, int) and index >= 0
-        indexed_dataset = list(self.indexed_dataset().values())
+        indexed_dataset = self.indexed_dataset()
 
-        # Calculate the slice for the current page
-        data = indexed_dataset[index:index + page_size]
+        # Find the start index (skip any missing data)
+        current_index = index
+        data = []
+        count = 0
 
-        # Calculate next_index
-        next_index = index + page_size
-        if next_index >= len(indexed_dataset):
-            next_index = None  # Indicates there is no next page
+        while count < page_size and current_index < len(indexed_dataset):
+            if current_index in indexed_dataset:
+                data.append(indexed_dataset[current_index])
+                count += 1
+            current_index += 1
+
+        # Find the next valid index
+        next_index = current_index
+        while (next_index < len(indexed_dataset)
+                and next_index not in indexed_dataset):
+            next_index += 1
 
         return {
             'index': index,
             'data': data,
-            'page_size': len(data),
+            'page_size': page_size,
             'next_index': next_index
         }
