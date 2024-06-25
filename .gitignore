@@ -164,4 +164,4 @@ cython_debug/
 
 # Custom
 # Custom
-.*main\.py$
+*main.py
