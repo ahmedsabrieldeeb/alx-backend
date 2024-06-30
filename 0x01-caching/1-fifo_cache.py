@@ -19,7 +19,8 @@ class FIFOCache (BaseCaching):
             return
 
         if len(data) == self.MAX_ITEMS:
-            drop_key = data.pop(next(iter(data)))
+            drop_key = next(iter(data))
+            data.pop(drop_key)
             print("DISCARD: {}".format(drop_key))
 
         data[key] = item
