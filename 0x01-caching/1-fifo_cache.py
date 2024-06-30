@@ -6,6 +6,10 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache (BaseCaching):
+    """
+    FIFOCache: class that inherits from BaseCaching
+    and is a caching system
+    """
     def put(self, key, item):
         """
         Add an item in the cache
