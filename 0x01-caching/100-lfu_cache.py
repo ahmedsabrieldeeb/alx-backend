@@ -37,13 +37,13 @@ class LFUCache (BaseCaching):
         else:
             # If the cache is full, remove the least frequent item
             if len(data) == self.MAX_ITEMS:
-                min_freq = min(map.values())
-                least_freq_items = [
-                    k for k in map if map[k] == min_freq]
-                least_freq_items.sort()
+                least_freq_items = list(map.keys())
+                least_freq_items.sort(key=lambda k: (map[k], queue.index(k)))
                 least_freq_item = least_freq_items[0]
+
                 del data[least_freq_item]
                 del map[least_freq_item]
+
                 queue.remove(least_freq_item)
                 print("DISCARD:", least_freq_item)
 
